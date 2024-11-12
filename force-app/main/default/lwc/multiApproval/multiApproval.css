@@ -1,0 +1,130 @@
+body::-webkit-scrollbar {
+  width: 1em;
+}
+ 
+body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+ 
+body::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+}
+
+.main-container {
+  background-color: #fff;
+  border-radius: 0.3rem;
+  border: 1px solid #C9C9C9;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 20rem;
+  max-height: 35rem;
+}
+
+.header {
+  border-bottom: 1px solid #C9C9C9;
+  background-color: #F3F3F3;
+  border-radius: .3rem .3rem 0 0;
+  padding: 1rem;
+  display:  flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heading {
+  display: flex;
+  gap: .8rem;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.heading h2 {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.top-container {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.items{
+  line-height: 1.5rem;
+  list-style-type: number;
+  list-style-position: inside;
+}
+
+.heading{
+  margin-bottom: .5rem;
+  font-size: 1rem;
+}
+
+/* modal styling */
+.cross-button {
+    width: 30px;
+    height: 30px;
+    position: relative;
+    cursor: pointer;
+}
+
+.cross-button::before,
+.cross-button::after {
+    content: '';
+    position: absolute;
+    height: 3.1px;
+    width: 1.5rem;
+    background-color: #fff;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+}
+
+.cross-button::before {
+    transform: rotate(45deg);
+}
+
+.cross-button::after {
+    transform: rotate(-45deg);
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 2rem;
+}
+
+.textarea-comment {
+  width: 100%;
+}
+
+.textarea-comment:focus {
+    outline: 0;
+    border-color: rgb(27, 150, 255) !important;
+    box-shadow: 0 0 3px #0176d3;
+}
+
+sup{
+    color: red;
+    top: 0rem !important;
+    font-size: .95rem;
+}
+
+.no-Opp {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+}
+
+ol {
+  display: flex;
+  gap: 2rem;
+}

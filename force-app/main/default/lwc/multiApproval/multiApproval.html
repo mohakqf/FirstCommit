@@ -1,0 +1,143 @@
+<template>
+    <div class="main-container">
+        <!-- Approval/Reject Buttons -->
+        <div class="top-container">
+            <div class="header">
+                <template if:true={AdminApproval}>
+                    <div class="heading">
+                        <lightning-icon
+                            icon-name="standard:approval"
+                            size="medium"
+                            alternative-text="Indicates approval">
+                        </lightning-icon>
+                        <h2>Admin Approval History</h2>
+                    </div>
+                </template>
+                <template if:true={OperationalApproval}>
+                    <div class="heading">
+                        <lightning-icon
+                            icon-name="standard:approval"
+                            size="medium"
+                            alternative-text="Indicates approval">
+                        </lightning-icon>
+                        <h2>Operational Approval</h2>
+                    </div>
+                </template>
+                <template if:true={PricingApproval}>
+                    <div class="heading">
+                        <lightning-icon
+                            icon-name="standard:approval"
+                            size="medium"
+                            alternative-text="Indicates approval">
+                        </lightning-icon>
+                        <h2>Pricing Approval</h2>
+                    </div>
+                </template>
+                <div class="slds-button-group btn-grp" role="group">
+                    <button class="slds-button slds-button_neutral" onclick={handleRefresh}>Refresh</button>
+                    <button class="slds-button slds-button_neutral" onclick={showApprovalModal}>Approve</button>
+                    <button class="slds-button slds-button_neutral" onclick={handleReject}>Reject</button>
+                </div>
+                
+                <!-- Approval Modal -->
+                <template if:true={showApproveModal}>
+                    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <div class="slds-modal__header">
+                                <h1 id="modal-heading-02" class="slds-modal__title slds-hyphenate">Approve Opportunity</h1>
+                            </div>
+                            <div class="slds-modal__content slds-p-around_medium modal-body" id="modal-content-id-2">
+                                <label for="approvalComments" style="text-align:center;">Approval Comments</label>
+                                <lightning-textarea name="approvalComments" placeholder="Enter comments here" value={approvalComments} onchange={handleApprovalCommentsChange}></lightning-textarea>
+                            </div>
+                            <div class="slds-modal__footer">
+                                <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeApproveModal}>Cancel</button>
+                                <button class="slds-button slds-button--brand" onclick={handleApprove} disabled={disableApproveBtn}>Approve</button>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                </template>
+
+                <!-- Rejection Modal Content -->
+                <template if:true={showRejectModal}>
+                    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <div class="slds-modal__header">
+                                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Reject Opportunity</h1>
+                            </div>
+                            <template if:true={showPPICReason}>
+                                <div class="slds-modal__content slds-p-around_medium modal-body" id="modal-content-id-1">
+                                    <label for="rejectionReason">Select Rejection Reason</label>
+                                    <lightning-combobox
+                                        name="rejectionReason"
+                                        placeholder="Select a reason"
+                                        options={PPICrejectionReasonOptions}
+                                        value={selectedRejectionReason}
+                                        onchange={handleRejectionReasonChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </template>
+                            <template if:true={showPricingReason}>
+                                <div class="slds-modal__content slds-p-around_medium modal-body" id="modal-content-id-3">
+                                    <label for="rejectionReason">Select Rejection Reason</label>
+                                    <lightning-combobox
+                                        name="rejectionReason"
+                                        placeholder="Select a reason"
+                                        options={PricingrejectionReasonOptions}
+                                        value={selectedRejectionReason}
+                                        onchange={handleRejectionReasonChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </template>
+                            <template if:true={showAdminReason}>
+                                <div class="slds-modal__content slds-p-around_medium modal-body" id="modal-content-id-4">
+                                    <label for="rejectionReason">Select Rejection Reason</label>
+                                    <lightning-combobox
+                                        name="rejectionReason"
+                                        placeholder="Select a reason"
+                                        options={AdminrejectionReasonOptions}
+                                        value={selectedRejectionReason}
+                                        onchange={handleRejectionReasonChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </template>
+                            <div class="slds-modal__footer">
+                                <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={closeRejectModal}>Cancel</button>
+                                <button class="slds-button slds-button--brand" onclick={handleRejectInModal} disabled={disableBtn}>Reject</button>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                </template>
+            </div>
+
+            <div class="data-table">
+                <!-- DataTable with Checkboxes -->
+              <!-- <lightning-datatable
+    key-field="id"
+    data={opportunities}
+    columns={columns}
+    selected-rows={selectedRows}
+    onrowselection={handleRowSelection}>
+</lightning-datatable> -->
+<lightning-datatable
+    key-field="id"
+    data={opportunities}
+    columns={columns}
+    selected-rows={selectedRows}
+    onrowselection={handleRowSelection}>
+</lightning-datatable>
+            </div>
+            <template if:false={oppCount}>
+                <div class="no-Opp">
+                    <lightning-icon icon-name="action:submit_for_approval" alternative-text="Approved" title="Approved"></lightning-icon>
+                    <h1>No Opportunity is Pending for Approval!</h1>
+                    <button class="slds-button slds-button_neutral" onclick={handleRefresh}>Refresh&nbsp;
+                        <lightning-icon icon-name="utility:refresh" alternative-text="refresh!" title="refresh" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>
